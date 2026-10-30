@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Content Unhider demo</title>
+  <style>
+    body {font: 16px/1.7 system-ui,sans-serif; margin:0; padding:3rem; background:#f7f9fc; color:#123; overflow:hidden}
+    article {max-width:640px; margin:auto; padding:2rem; background:white; border-radius:14px; box-shadow:0 8px 35px #0001}
+    .locked {display:none}
+    .blurred {filter:blur(6px)}
+    .demo-overlay {position:fixed; inset:0; display:grid; place-items:center; background:#09253ad9; color:white; z-index:999}
+    .demo-overlay>div {padding:2rem; background:#173d57; border-radius:12px; text-align:center}
+  </style>
+</head>
+<body>
+  <article>
+    <h1>Content Unhider test page</h1>
+    <p>Visible article paragraph for comparison.</p>
+    <div class="locked"><p>This local demonstration paragraph is hidden with CSS.</p></div>
+    <p class="blurred">This local demonstration paragraph is deliberately blurred.</p>
+  </article>
+  <div class="demo-overlay"><div><h2>Example overlay</h2><p>This is a local test element, not restricted content.</p></div></div>
+</body>
+</html>
