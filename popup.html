@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Content Unhider</title>
+  <link rel="stylesheet" href="popup.css">
+  <script src="popup.js" defer></script>
+</head>
+<body>
+  <header class="header">
+    <div class="brand-icon" aria-hidden="true">◈</div>
+    <div>
+      <h1>Content Unhider</h1>
+      <div class="subtitle">Page display tools · v1.0</div>
+    </div>
+    <span class="version-pill">MV3</span>
+  </header>
+
+  <main>
+    <section class="website" aria-label="Current site">
+      <span class="website-label">CURRENT WEBSITE</span>
+      <strong id="host" class="host">Detecting tab…</strong>
+      <span id="tab-support" class="support">Changes only run when you click Apply.</span>
+    </section>
+
+    <form id="settings">
+      <fieldset>
+        <legend>Display adjustments</legend>
+        <label class="toggle-row"><span><strong>Hide overlays</strong><small>Hide elements matching overlay selectors</small></span><input id="hideOverlays" type="checkbox" checked><span class="switch" aria-hidden="true"></span></label>
+        <label class="toggle-row"><span><strong>Reveal article text</strong><small>Restore CSS-hidden paragraphs and ancestors</small></span><input id="revealText" type="checkbox" checked><span class="switch" aria-hidden="true"></span></label>
+        <label class="toggle-row"><span><strong>Remove text blur</strong><small>Clear blur filters on matched article content</small></span><input id="removeBlur" type="checkbox" checked><span class="switch" aria-hidden="true"></span></label>
+        <label class="toggle-row"><span><strong>Restore scrolling</strong><small>Remove page-level scroll locks</small></span><input id="restoreScroll" type="checkbox" checked><span class="switch" aria-hidden="true"></span></label>
+        <label class="toggle-row"><span><strong>Watch new elements</strong><small>Reapply when a page changes dynamically</small></span><input id="watchChanges" type="checkbox" checked><span class="switch" aria-hidden="true"></span></label>
+      </fieldset>
+
+      <details class="selectors" id="selectors-section">
+        <summary>Site-specific CSS selectors <span class="chevron" aria-hidden="true">⌄</span></summary>
+        <label for="overlaySelectors">Overlay elements <span class="hint">one selector per line</span></label>
+        <textarea id="overlaySelectors" rows="5" spellcheck="false"></textarea>
+        <label for="textSelectors">Article text elements <span class="hint">one selector per line</span></label>
+        <textarea id="textSelectors" rows="4" spellcheck="false"></textarea>
+        <p class="helper">Use Chrome Inspect to find the right classes or IDs. Avoid selecting entire article containers as overlays.</p>
+      </details>
+
+      <div class="buttons">
+        <button id="apply" type="submit" class="primary">Apply to this tab</button>
+        <button id="restore" type="button" class="secondary">Restore page</button>
+      </div>
+      <button id="save" type="button" class="save">Save settings for this site</button>
+    </form>
+
+    <div role="status" aria-live="polite" id="status" class="status">Ready.</div>
+    <p class="footnote">Works only on content already present in the browser. It cannot retrieve server-restricted articles.</p>
+  </main>
+</body>
+</html>

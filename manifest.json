@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "Content Unhider",
+  "version": "1.0.0",
+  "description": "On-demand tools for inspecting and adjusting CSS-hidden content on pages you visit.",
+  "permissions": ["activeTab", "scripting", "storage"],
+  "action": {
+    "default_title": "Content Unhider",
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "32": "icons/icon-32.png",
+      "48": "icons/icon-48.png",
+      "128": "icons/icon-128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon-16.png",
+    "32": "icons/icon-32.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  }
+}
