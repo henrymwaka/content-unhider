@@ -1,0 +1,43 @@
+name: Validate extension
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate JavaScript syntax
+        run: |
+          node --check content.js
+          node --check popup.js
+      - name: Validate manifest and required files
+        run: |
+          node - <<'NODE'
+          const fs = require('node:fs');
+          const assert = require('node:assert/strict');
+          const manifest = JSON.parse(fs.readFileSync('manifest.json', 'utf8'));
+          assert.equal(manifest.manifest_version, 3);
+          assert.ok(/^\d+\.\d+\.\d+$/.test(manifest.version));
+          const required = [
+            'content.js', 'popup.html', 'popup.css', 'popup.js',
+            manifest.action.default_popup,
+            ...Object.values(manifest.icons)
+          ];
+          for (const file of new Set(required)) {
+            assert.ok(fs.existsSync(file), 'Missing: ' + file);
+          }
+          console.log('Manifest and extension assets verified.');
+          NODE
+      - name: Run controller tests
+        run: node tests/test-content.js
