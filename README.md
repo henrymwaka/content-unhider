@@ -1,13 +1,13 @@
-# Content Unhider v1.0
+# Content Unhider v1.0.0
 
 A working, local-only Chrome Manifest V3 extension for on-demand page-style adjustments. It can hide specific CSS overlays, reveal article paragraphs that are hidden in the page's existing DOM, remove blur filters, and restore scrolling. It can watch for dynamic changes, remember settings per hostname, and reverse its inline-style changes.
 
 ## Install in Chrome
 
-1. Unzip `content-unhider-extension.zip` to a folder on your computer.
+1. Download `content-unhider-v1.0.0.zip` from [GitHub Releases](https://github.com/henrymwaka/content-unhider/releases) and extract it to a permanent folder.
 2. Open Chrome at `chrome://extensions/`.
 3. Turn on **Developer mode**.
-4. Click **Load unpacked** and select the **content-unhider-extension** folder containing `manifest.json`.
+4. Click **Load unpacked** and select the extracted folder containing `manifest.json`.
 5. Pin **Content Unhider** to your toolbar from the Extensions menu.
 6. Open an ordinary `https://` website, click the extension icon, and choose **Apply to this tab**.
 
@@ -52,3 +52,11 @@ No permanent `<all_urls>` host permission, background service, analytics, remote
 ## Developer notes
 
 No build step or third-party dependencies. If you edit code, reload the extension at `chrome://extensions/`, then refresh the tested webpage. You can inspect popup errors by right-clicking the extension popup and choosing **Inspect**. Use Chrome's DevTools for page-specific CSS selectors.
+
+## Testing and releases
+
+- Basic checks: `node --check content.js`, `node --check popup.js`, and `node tests/test-content.js`.
+- Optional Chromium DOM and popup UI smoke tests: install `playwright` for Python, install its Chromium browser, then run `python tests/browser_smoke.py`. The smoke tests use simulated Chrome extension APIs; they do not validate the toolbar's actual `activeTab` permission path.
+- Generate a root-manifest release package with `python scripts/package.py`. This creates a deterministic ZIP and a SHA-256 checksum in `dist/`.
+
+Download official packages and verify the checksum on the [GitHub Releases page](https://github.com/henrymwaka/content-unhider/releases). The GitHub source archive is not the same as the extension package: extract the release ZIP and use **Load unpacked**.
