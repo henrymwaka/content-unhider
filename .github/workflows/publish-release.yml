@@ -1,0 +1,56 @@
+name: Publish v1.0.0 release
+
+on:
+  push:
+    branches: [main]
+    paths: [releases/v1.0.0.md]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: content-unhider-v1.0.0-release
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout release commit
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify source and tests
+        run: |
+          node --check content.js
+          node --check popup.js
+          node tests/test-content.js
+      - name: Package the installable extension
+        run: python3 scripts/package.py
+      - name: Verify the ZIP contains the manifest at its root
+        run: |
+          python3 - <<'PY'
+          from zipfile import ZipFile
+          with ZipFile('dist/content-unhider-v1.0.0.zip') as z:
+              assert z.testzip() is None
+              assert 'manifest.json' in z.namelist()
+              assert not any(p.startswith('content-unhider/') for p in z.namelist())
+          print('Release package verified')
+          PY
+      - name: Publish to GitHub Releases
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view v1.0.0 >/dev/null 2>&1; then
+            echo 'Release v1.0.0 already exists. No files overwritten.' >&2
+            exit 1
+          fi
+          gh release create v1.0.0 \
+            dist/content-unhider-v1.0.0.zip \
+            dist/SHA256SUMS.txt \
+            --title 'Content Unhider v1.0.0' \
+            --notes-file releases/v1.0.0.md \
+            --target "$GITHUB_SHA"
